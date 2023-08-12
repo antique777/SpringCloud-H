@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: javaboy_route
+          uri: lb://provider
+          filters:
+            - AddRequestParameter=helloGet,javaboy
+          predicates:
+            #表示路径满足/2019/0612/这个规则，都会进行转发
+#            - Path=/2019/0612/{segment}
+            - Method=GET
+#            - Query=name,java.*
+      discovery:
+        locator:
+          enabled: true #开启自动代理
+
+logging:
+  level:
+    org.springframework.cloud.gateway: debug
+
+server:
+  port: 3000
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1111/eureka
+

@@ -1,0 +1,35 @@
+resilience4j:
+  retry:
+    #表示retry的优先级，数值越小，优先级越高
+    retry-aspect-order:   399
+    # 不同的服务配置不同的策略，不同的组起不同的名字
+    backends:
+      retry-A:
+        maxRetryAttempts: 5 #重试次数
+        waitDuration: 1000 # 间隔时间
+        exponentialBackoffMultopilier: 1.1 #间隔乘数,  这个好像没有生效
+        retryExceptions:
+          - java.lang.RuntimeException
+  circuitbreaker:
+    instances:
+      cbA:
+        ring-buffer-size-in-closed-state: 5
+        ring-buffer-size-in-half-open-state: 3
+        failure-rate-threshold: 50
+#        wait-duration-in-open-state: 5000
+        waitInerval: 500
+        record-exceptions:
+          - org.springframework.web.client.HttpServerErrorException
+    circuit-breaker-aspect-order: 398
+
+spring:
+  application:
+    name: resilience4j
+
+server:
+  port: 5000
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1111/eureka
