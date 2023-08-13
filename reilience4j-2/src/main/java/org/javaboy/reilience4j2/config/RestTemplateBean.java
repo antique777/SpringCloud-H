@@ -21,4 +21,5 @@ public class RestTemplateBean {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate;
     }
+
 }
